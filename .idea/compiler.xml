@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cpu-user-service" />
+        <module name="cpu-microapp" />
+        <module name="service-common" />
+        <module name="cpu-production-service" />
+        <module name="cpu-status-service" />
+        <module name="cpu-gateway" />
+        <module name="cpu-common" />
+        <module name="cpu-order-service" />
+        <module name="cpu-gateway-microapp" />
+        <module name="cpu-vms-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="autoSell" target="1.8" />
+      <module name="cpu-common" target="1.8" />
+      <module name="cpu-gateway" target="1.8" />
+      <module name="cpu-gateway-microapp" target="1.8" />
+      <module name="cpu-microapp" target="1.8" />
+      <module name="cpu-order-service" target="1.8" />
+      <module name="cpu-production-service" target="1.8" />
+      <module name="cpu-service" target="1.8" />
+      <module name="cpu-status-service" target="1.8" />
+      <module name="cpu-user-service" target="1.8" />
+      <module name="cpu-vms-service" target="1.8" />
+      <module name="service-common" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cpu-common" options="-parameters" />
+      <module name="cpu-gateway" options="-parameters" />
+      <module name="cpu-gateway-microapp" options="-parameters" />
+      <module name="cpu-microapp" options="-parameters" />
+      <module name="cpu-order-service" options="-parameters" />
+      <module name="cpu-production-service" options="-parameters" />
+      <module name="cpu-status-service" options="-parameters" />
+      <module name="cpu-user-service" options="-parameters" />
+      <module name="cpu-vms-service" options="-parameters" />
+      <module name="service-common" options="-parameters" />
+    </option>
+  </component>
+</project>

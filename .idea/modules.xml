@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/autoSell.iml" filepath="$PROJECT_DIR$/.idea/autoSell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-common/cpu-common.iml" filepath="$PROJECT_DIR$/cpu-common/cpu-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-gateway/cpu-gateway.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-gateway/cpu-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-gateway-microapp/cpu-gateway-microapp.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-gateway-microapp/cpu-gateway-microapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-microapp/cpu-microapp.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-microapp/cpu-microapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-order-service/cpu-order-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-order-service/cpu-order-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-production-service/cpu-production-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-production-service/cpu-production-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-status-service/cpu-status-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-status-service/cpu-status-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-user-service/cpu-user-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-user-service/cpu-user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/cpu-vms-service/cpu-vms-service.iml" filepath="$PROJECT_DIR$/cpu-service/cpu-vms-service/cpu-vms-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cpu-service/service-common/service-common.iml" filepath="$PROJECT_DIR$/cpu-service/service-common/service-common.iml" />
+    </modules>
+  </component>
+</project>
