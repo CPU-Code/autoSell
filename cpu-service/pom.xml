@@ -23,5 +23,19 @@
         <module>service-common</module>
     </modules>
 
+    <dependencies>
+        <!--引用工具包-->
+        <dependency>
+            <groupId>com.cpucode</groupId>
+            <artifactId>cpu-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- 引入spring boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
