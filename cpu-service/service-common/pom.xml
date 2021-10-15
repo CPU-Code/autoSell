@@ -11,5 +11,13 @@
 
     <artifactId>service-common</artifactId>
 
+    <dependencies>
+        <!-- 引入 mybatis plus -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
 
+    </dependencies>
 </project>
