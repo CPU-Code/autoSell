@@ -7,4 +7,19 @@ package com.cpucode.common;
  * @csdn : https://blog.csdn.net/qq_44226094
  */
 public class VMSystem {
+    /**
+     * 管理员后台登录
+     */
+    public static final Integer LOGIN_ADMIN = 0;
+    /**
+     * 运维/运营人员app登录
+     */
+    public static final Integer LOGIN_EMP = 1;
+    /**
+     * 合作商登录
+     */
+    public static final Integer LOGIN_PARTNER = 2;
+
+
+
 }

@@ -2,7 +2,11 @@ package com.cpucode.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cpucode.entity.UserEntity;
+import com.cpucode.http.viewModel.LoginReq;
+import com.cpucode.http.viewModel.LoginResp;
 import com.cpucode.viewmodel.Pager;
+
+import java.io.IOException;
 
 /**
  * @author : cpucode
@@ -34,4 +38,11 @@ public interface UserService extends IService<UserEntity> {
      */
     Pager<UserEntity> findPage(long pageIndex, long pageSize,
                                       String userName, Integer roleId);
+
+    /**
+     * 后台登录
+     * @param req
+     * @return
+     */
+    LoginResp login(LoginReq req) throws IOException;
 }
