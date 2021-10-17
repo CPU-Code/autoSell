@@ -2,6 +2,7 @@ package com.cpucode.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cpucode.entity.UserEntity;
+import com.cpucode.viewmodel.Pager;
 
 /**
  * @author : cpucode
@@ -22,4 +23,15 @@ public interface UserService extends IService<UserEntity> {
      * @return
      */
     Integer getRepairerCount();
+
+    /**
+     * 分页查询 用户信息
+     * @param pageIndex 当前页
+     * @param pageSize 页数
+     * @param userName 用户名
+     * @param roleId 角色id
+     * @return
+     */
+    Pager<UserEntity> findPage(long pageIndex, long pageSize,
+                                      String userName, Integer roleId);
 }
