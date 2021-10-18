@@ -189,7 +189,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
         }
 
         LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<>();
-        uw.set(PartnerEntity::getPassword, BCrypt.hashpw(req.getPassword(), BCrypt.gensalt()))
+        uw.set(PartnerEntity::getPassword, BCrypt.hashpw(req.getNewPassword(), BCrypt.gensalt()))
                 .eq(PartnerEntity::getId, id);
 
         return this.update(uw);
