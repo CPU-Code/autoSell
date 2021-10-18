@@ -38,7 +38,7 @@ public class LoginReq {
     /**
      * 客户端请求验证码的token
      */
-    private String clientCode;
+    private String clientToken;
 
     /**
      * 登录类型 0：后台；1：运营运维端；2：合作商后台
