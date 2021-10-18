@@ -9,7 +9,9 @@ import com.cpucode.entity.UserEntity;
 import com.cpucode.http.view.TokenObject;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
+import com.cpucode.service.PartnerService;
 import com.cpucode.service.UserService;
+import com.cpucode.sms.SmsSender;
 import com.cpucode.utils.BCrypt;
 import com.cpucode.utils.JWTUtil;
 import com.cpucode.viewmodel.Pager;
@@ -19,6 +21,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * @author : cpucode
@@ -31,6 +36,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @Autowired
+    private PartnerService partnerService;
+
+    @Autowired
+    private SmsSender smsSender;
 
     /**
      * 获取所有运营人员数量
@@ -64,7 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      * @param pageSize 页数
      * @param userName 用户名
      * @param roleId 角色id
-     * @return
+     * @return 用户分页
      */
     @Override
     public Pager<UserEntity> findPage(long pageIndex, long pageSize,
@@ -95,8 +106,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     /**
      * 后台登录
-     * @param req
-     * @return
+     * @param req 登录请求
+     * @return 登录响应
      */
     @Override
     public LoginResp login(LoginReq req) throws IOException{
@@ -115,6 +126,43 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return resp;
     }
 
+    /**
+     * 发送验证码
+     * @param mobile 电话号码
+     */
+    @Override
+    public void sendCode(String mobile){
+        //非空校验
+        if(Strings.isNullOrEmpty(mobile)) return;
+
+        //查询用户表中是否存在该手机号
+        LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserEntity::getMobile, mobile);
+
+        //如果不存在，直接返回
+        if(this.count(wrapper) <= 0) {
+            return ;
+        }
+
+        //利用 redis过期时间 , 避免5分钟内重复发送
+        if(redisTemplate.opsForValue().get(mobile) != null) {
+            return;
+        }
+
+        //生成5位短信验证码
+        StringBuilder sbCode = new StringBuilder();
+        Stream.generate(() -> new Random().nextInt(10))
+                .limit(5)
+                .forEach(x -> sbCode.append(x));
+
+        //将验证码放入 redis ，5分钟过期
+        redisTemplate.opsForValue().set(mobile, sbCode.toString(), Duration.ofMinutes(5));
+
+        //发送短信
+        smsSender.sendMsg(mobile, sbCode.toString());
+    }
+
+
 
     /**
      * 管理员登录
@@ -128,7 +176,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         resp.setSuccess(false);
 
         // 通过 redis 获取验证码
-        String code = redisTemplate.boundValueOps(req.getClientCode()).get();
+        String code = redisTemplate.boundValueOps(req.getClientToken()).get();
 
         if (Strings.isNullOrEmpty(code)){
             resp.setMsg("验证码错误");
@@ -161,7 +209,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     /**
      * 运维运营人员登录
-     * @param req
+     * @param req 登录入参
      * @return
      * @throws IOException
      */
@@ -197,9 +245,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
     /**
      * 登录成功签发token
-     * @param userEntity
-     * @param loginType
-     * @return
+     * @param userEntity  用户信息
+     * @param loginType  登录类型 0：后台；1：运营运维端；2：合作商后台
+     * @return 登录响应信息
      */
     private LoginResp okResp(UserEntity userEntity, Integer loginType) throws IOException {
         LoginResp resp = new LoginResp();

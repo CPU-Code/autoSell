@@ -45,4 +45,10 @@ public interface UserService extends IService<UserEntity> {
      * @return
      */
     LoginResp login(LoginReq req) throws IOException;
+
+    /**
+     * 发送验证码
+     * @param mobile 电话号码
+     */
+    void sendCode(String mobile);
 }

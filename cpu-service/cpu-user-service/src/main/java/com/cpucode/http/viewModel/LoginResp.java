@@ -3,6 +3,7 @@ package com.cpucode.http.viewModel;
 import lombok.Data;
 
 /**
+ * 登录响应
  * @author : cpucode
  * @date : 2021/10/17 22:04
  * @github : https://github.com/CPU-Code
