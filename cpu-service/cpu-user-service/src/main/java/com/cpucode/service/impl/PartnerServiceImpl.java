@@ -1,19 +1,23 @@
 package com.cpucode.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpucode.common.VMSystem;
 import com.cpucode.dao.PartnerDao;
 import com.cpucode.entity.PartnerEntity;
+import com.cpucode.exception.LogicException;
+import com.cpucode.feignService.VMService;
 import com.cpucode.http.view.TokenObject;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
+import com.cpucode.http.viewModel.PartnerReq;
 import com.cpucode.service.PartnerService;
 import com.cpucode.utils.BCrypt;
 import com.cpucode.utils.JWTUtil;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,8 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
      * RequiredArgsConstructor 可以 代替所有的 Autowired
      */
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final VMService vmService;
 
     /**
      * 合作商登录
@@ -83,4 +89,58 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
 
         return resp;
     }
+
+    /**
+     * 更新合作商
+     * @param id 主键id
+     * @param req 合作商信息
+     * @return
+     */
+    @Override
+    public Boolean modify(Integer id, PartnerReq req){
+        LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<PartnerEntity>();
+        uw.set(PartnerEntity::getName, req.getName())
+                .set(PartnerEntity::getRatio, req.getRatio())
+                .set(PartnerEntity::getContact, req.getContact())
+                .set(PartnerEntity::getPhone, req.getPhone());
+
+        PartnerEntity partnerEntity = new PartnerEntity();
+        BeanUtils.copyProperties(req, partnerEntity);
+        partnerEntity.setId(id);
+
+        return this.updateById(partnerEntity);
+    }
+
+    /**
+     * 删除所属点
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean delete(Integer id) {
+        Integer nodeCount = vmService.getNodeCountByOwnerId(id);
+        if(nodeCount == null)
+            throw new LogicException("无法获取所属点位数");
+        if(nodeCount > 0){
+            throw new LogicException("请先修改下属点位归属");
+        }
+
+        return this.removeById(id);
+    }
+
+    /**
+     * 重置密码
+     * @param id
+     */
+    @Override
+    public void resetPwd(Integer id) {
+        String pwd = BCrypt.hashpw("123456", BCrypt.gensalt());
+        LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<PartnerEntity>();
+        uw.set(PartnerEntity::getPassword, pwd)
+                .eq(PartnerEntity::getId, id);
+
+        this.update(uw);
+    }
+
+
 }

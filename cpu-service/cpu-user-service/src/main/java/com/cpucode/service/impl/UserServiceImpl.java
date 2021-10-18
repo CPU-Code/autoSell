@@ -17,6 +17,7 @@ import com.cpucode.utils.JWTUtil;
 import com.cpucode.viewmodel.Pager;
 import com.cpucode.viewmodel.UserViewModel;
 import com.google.common.base.Strings;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -197,7 +198,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      * @param regionId 区域id
      * @return
      */
-    List<UserViewModel> getRepairerList(Long regionId){
+    @Override
+    public List<UserViewModel> getRepairerList(Long regionId) {
         LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserEntity::getRoleCode, "1003")
                 .eq(UserEntity::getRegionId, regionId)
@@ -214,6 +216,26 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
                     return vo;
                 }).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取某区域下维修员/运营员总数
+     * @param regionId 区域id
+     * @param isRepair 切换角色
+     * @return
+     */
+    @Override
+    public Integer getCountByRegion(Long regionId, Boolean isRepair){
+        LambdaQueryWrapper<UserEntity> qw = new LambdaQueryWrapper<UserEntity>();
+        qw.eq(UserEntity::getRegionId,regionId);
+
+        if(isRepair){
+            qw.eq(UserEntity::getRoleId, 3);
+        }else {
+            qw.eq(UserEntity::getRoleId, 2);
+        }
+
+        return this.count(qw);
     }
 
     /**

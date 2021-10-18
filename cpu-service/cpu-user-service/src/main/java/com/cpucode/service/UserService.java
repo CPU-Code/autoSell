@@ -67,4 +67,12 @@ public interface UserService extends IService<UserEntity> {
      * @return
      */
     List<UserViewModel> getRepairerList(Long regionId);
+
+    /**
+     * 获取某区域下维修员/运营员总数
+     * @param regionId 区域id
+     * @param isRepair
+     * @return
+     */
+    Integer getCountByRegion(Long regionId, Boolean isRepair);
 }
