@@ -1,7 +1,9 @@
 package com.cpucode.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpucode.common.VMSystem;
 import com.cpucode.dao.PartnerDao;
@@ -12,9 +14,11 @@ import com.cpucode.http.view.TokenObject;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
 import com.cpucode.http.viewModel.PartnerReq;
+import com.cpucode.http.viewModel.PartnerUpdatePwdReq;
 import com.cpucode.service.PartnerService;
 import com.cpucode.utils.BCrypt;
 import com.cpucode.utils.JWTUtil;
+import com.cpucode.viewmodel.Pager;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -142,5 +146,53 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
         this.update(uw);
     }
 
+    /**
+     * 查询合作商
+     * @param pageIndex 当前页
+     * @param pageSize 页码大小
+     * @param name 名字
+     * @return
+     */
+    @Override
+    public Pager<PartnerEntity> search(Long pageIndex, Long pageSize, String name) {
+        Page<PartnerEntity> page = new Page<>(pageIndex, pageSize);
+
+        LambdaQueryWrapper<PartnerEntity> qw = new LambdaQueryWrapper<>();
+        if(!Strings.isNullOrEmpty(name)){
+            qw.like(PartnerEntity::getName, name);
+        }
+
+        this.page(page, qw);
+
+        page.getRecords().forEach(p -> {
+            p.setPassword("");
+            p.setVmCount(vmService.getVmCountByOwnerId(p.getId()));
+        });
+
+        return Pager.build(page);
+    }
+
+    /**
+     * 更新密码
+     * @param req
+     * @return
+     */
+    @Override
+    public Boolean updatePwd(Integer id, PartnerUpdatePwdReq req){
+        PartnerEntity partner = this.getById(id);
+        if (partner == null){
+            throw new LogicException("合作商不存在");
+        }
+
+        if (!BCrypt.checkpw(req.getPassword(), partner.getPassword())){
+            throw new LogicException("原始密码错误");
+        }
+
+        LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<>();
+        uw.set(PartnerEntity::getPassword, BCrypt.hashpw(req.getPassword(), BCrypt.gensalt()))
+                .eq(PartnerEntity::getId, id);
+
+        return this.update(uw);
+    }
 
 }

@@ -51,9 +51,9 @@ public interface PartnerService extends IService<PartnerEntity> {
 
     /**
      * 查询合作商
-     * @param pageIndex
-     * @param pageSize
-     * @param name
+     * @param pageIndex 当前页
+     * @param pageSize 页码大小
+     * @param name 名字
      * @return
      */
     Pager<PartnerEntity> search(Long pageIndex, Long pageSize, String name);
