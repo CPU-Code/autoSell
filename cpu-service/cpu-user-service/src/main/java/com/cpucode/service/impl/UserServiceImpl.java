@@ -192,7 +192,29 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * 获取某区域下所有运维人员
+     * @param regionId 区域id
+     * @return
+     */
+    List<UserViewModel> getRepairerList(Long regionId){
+        LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserEntity::getRoleCode, "1003")
+                .eq(UserEntity::getRegionId, regionId)
+                .eq(UserEntity::getStatus, true);
 
+        return this.list(wrapper).stream().map(u -> {
+                    UserViewModel vo = new UserViewModel();
+
+                    BeanUtils.copyProperties(u, vo);
+
+                    vo.setRoleName(u.getRole().getRoleName());
+                    vo.setRoleCode(u.getRoleCode());
+                    vo.setUserId(u.getId());
+
+                    return vo;
+                }).collect(Collectors.toList());
+    }
 
     /**
      * 管理员登录

@@ -60,4 +60,11 @@ public interface UserService extends IService<UserEntity> {
      * @return
      */
     List<UserViewModel> getOperatorList(Long regionId);
+
+    /**
+     * 获取某区域下所有运维人员
+     * @param regionId 区域id
+     * @return
+     */
+    List<UserViewModel> getRepairerList(Long regionId);
 }
