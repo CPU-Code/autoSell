@@ -12,7 +12,12 @@
     <artifactId>cpu-common</artifactId>
 
     <dependencies>
-
+        <!-- token 生成 json -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
 </project>

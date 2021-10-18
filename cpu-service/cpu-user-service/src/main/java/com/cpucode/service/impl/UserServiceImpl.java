@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpucode.common.VMSystem;
 import com.cpucode.dao.UserDao;
 import com.cpucode.entity.UserEntity;
+import com.cpucode.http.view.TokenObject;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
 import com.cpucode.service.UserService;
 import com.cpucode.utils.BCrypt;
+import com.cpucode.utils.JWTUtil;
 import com.cpucode.viewmodel.Pager;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,8 +156,68 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
             return resp;
         }
 
-        return resp;
+        return okResp(userEntity, VMSystem.LOGIN_ADMIN);
     }
 
+    /**
+     * 运维运营人员登录
+     * @param req
+     * @return
+     * @throws IOException
+     */
+    private LoginResp empLogin(LoginReq req) throws IOException {
+        LoginResp resp = new LoginResp();
+        resp.setSuccess(false);
+
+        // 通过 redis 获取验证码
+        String code = redisTemplate.boundValueOps(req.getMobile()).get();
+        if(Strings.isNullOrEmpty(code)){
+            resp.setMsg("验证码错误");
+            return resp;
+        }
+        if(!req.getCode().equals(code)){
+            resp.setMsg("验证码错误");
+            return resp;
+        }
+
+        // 通过电话号码获取 用户消息
+        QueryWrapper<UserEntity> qw = new QueryWrapper<>();
+        qw.lambda()
+                .eq(UserEntity::getMobile, req.getMobile());
+
+        UserEntity userEntity = this.getOne(qw);
+        if (userEntity == null){
+            resp.setMsg("不存在该账户");
+            return resp;
+        }
+
+        return okResp(userEntity, VMSystem.LOGIN_EMP);
+    }
+
+
+    /**
+     * 登录成功签发token
+     * @param userEntity
+     * @param loginType
+     * @return
+     */
+    private LoginResp okResp(UserEntity userEntity, Integer loginType) throws IOException {
+        LoginResp resp = new LoginResp();
+        resp.setSuccess(true);
+        resp.setRoleCode(userEntity.getRoleCode());
+        resp.setUserName(userEntity.getUserName());
+        resp.setUserId(userEntity.getId());
+        resp.setRegionId(userEntity.getRegionId()+"");
+        resp.setMsg("登录成功");
+
+        TokenObject tokenObject = new TokenObject();
+        tokenObject.setUserId(userEntity.getId());
+        tokenObject.setMobile(userEntity.getMobile());
+        tokenObject.setLoginType(loginType);
+
+        String token = JWTUtil.createJWTByObj(tokenObject,userEntity.getMobile() + VMSystem.JWT_SECRET);
+        resp.setToken(token);
+        return resp;
+    }
 
 }

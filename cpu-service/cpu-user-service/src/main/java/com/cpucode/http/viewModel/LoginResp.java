@@ -13,7 +13,7 @@ public class LoginResp {
     /**
      * 用户id
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 用户名
@@ -24,6 +24,7 @@ public class LoginResp {
      * 角色编号
      */
     private String roleCode;
+
     /**
      * jwt令牌
      */

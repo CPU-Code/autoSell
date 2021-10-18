@@ -20,6 +20,9 @@ public class VMSystem {
      */
     public static final Integer LOGIN_PARTNER = 2;
 
-
+    /**
+     * 客户端和合作商登录时用来生成 jwt token的secret
+     */
+    public static final String JWT_SECRET = "cpu+login+secret";
 
 }
