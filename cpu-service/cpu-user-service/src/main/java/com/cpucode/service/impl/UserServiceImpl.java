@@ -15,14 +15,18 @@ import com.cpucode.sms.SmsSender;
 import com.cpucode.utils.BCrypt;
 import com.cpucode.utils.JWTUtil;
 import com.cpucode.viewmodel.Pager;
+import com.cpucode.viewmodel.UserViewModel;
 import com.google.common.base.Strings;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -160,6 +164,32 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
         //发送短信
         smsSender.sendMsg(mobile, sbCode.toString());
+    }
+
+    /**
+     * 获取某区域下所有运营人员
+     * @param regionId 区域id
+     * @return
+     */
+    @Override
+    public List<UserViewModel> getOperatorList(Long regionId){
+        LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
+        // TODO 编号
+        wrapper.eq(UserEntity::getRoleCode, "1002")
+                .eq(UserEntity::getRegionId, regionId)
+                .eq(UserEntity::getStatus, true);
+
+        return this.list(wrapper).stream().map(u -> {
+                    UserViewModel vo = new UserViewModel();
+
+                    BeanUtils.copyProperties(u, vo);
+
+                    vo.setRoleName(u.getRole().getRoleName());
+                    vo.setRoleCode(u.getRoleCode());
+                    vo.setUserId(u.getId());
+
+                    return vo;
+                }).collect(Collectors.toList());
     }
 
 

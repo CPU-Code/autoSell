@@ -5,8 +5,10 @@ import com.cpucode.entity.UserEntity;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
 import com.cpucode.viewmodel.Pager;
+import com.cpucode.viewmodel.UserViewModel;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author : cpucode
@@ -51,4 +53,11 @@ public interface UserService extends IService<UserEntity> {
      * @param mobile 电话号码
      */
     void sendCode(String mobile);
+
+    /**
+     * 获取某区域下所有运营人员
+     * @param regionId 区域id
+     * @return
+     */
+    List<UserViewModel> getOperatorList(Long regionId);
 }
