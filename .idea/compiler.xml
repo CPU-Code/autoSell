@@ -2,20 +2,21 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cpu-user-service" />
+        <module name="cpu-vms-service" />
         <module name="cpu-microapp" />
         <module name="service-common" />
         <module name="cpu-production-service" />
         <module name="cpu-status-service" />
         <module name="cpu-gateway" />
         <module name="cpu-common" />
-        <module name="cpu-order-service" />
+        <module name="cpu-user-service" />
         <module name="cpu-gateway-microapp" />
-        <module name="cpu-vms-service" />
+        <module name="cpu-order-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

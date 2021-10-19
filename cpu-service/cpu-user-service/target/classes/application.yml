@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: cpu-user-service
+
+server:
+  port: 9006
+
