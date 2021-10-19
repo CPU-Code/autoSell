@@ -102,15 +102,20 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
      */
     @Override
     public Boolean modify(Integer id, PartnerReq req){
+        /***********************************************/
         LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<PartnerEntity>();
         uw.set(PartnerEntity::getName, req.getName())
                 .set(PartnerEntity::getRatio, req.getRatio())
                 .set(PartnerEntity::getContact, req.getContact())
                 .set(PartnerEntity::getPhone, req.getPhone());
 
+        /***********************************************/
+
         PartnerEntity partnerEntity = new PartnerEntity();
         BeanUtils.copyProperties(req, partnerEntity);
         partnerEntity.setId(id);
+
+        /***********************************************/
 
         return this.updateById(partnerEntity);
     }
