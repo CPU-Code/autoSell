@@ -1,6 +1,7 @@
 package com.cpucode.http.controller;
 
 import com.cpucode.entity.UserEntity;
+import com.cpucode.feignService.TaskService;
 import com.cpucode.feignService.VMService;
 import com.cpucode.http.viewModel.LoginReq;
 import com.cpucode.http.viewModel.LoginResp;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -266,10 +268,10 @@ public class UserController {
 
     /**
      * 搜索用户工作量列表
-     * @param pageIndex
-     * @param pageSize
-     * @param userName
-     * @param roleId
+     * @param pageIndex 当前页
+     * @param pageSize 页码
+     * @param userName 用户名
+     * @param roleId 角色id
      * @return
      */
     @GetMapping("/searchUserWork")
@@ -280,10 +282,15 @@ public class UserController {
             @RequestParam(value = "roleId",required = false,defaultValue = "0") Integer roleId){
         Pager<UserEntity> page = userService.findPage(pageIndex, pageSize, userName, roleId);
 
-        List<Object> collect = page.getCurrentPageRecords().stream().map(u ->{
-            taskService
-        }).collect(Collectors.toList());
+        List<UserWork> collect = page.getCurrentPageRecords().stream().map(u ->{
+            UserWork userWork = taskService.getUserWork(u.getId(),
+                    LocalDateTime.now().toLocalDate().atStartOfDay(),
+                    LocalDateTime.now());
+            // 该角色是否有数据 TODO
+            userWork.setRoleName(u.getRole().getRoleName());
 
+            return userWork;
+        }).collect(Collectors.toList());
 
         Pager<UserWork> result = Pager.buildEmpty();
         result.setPageIndex(page.getPageIndex());
