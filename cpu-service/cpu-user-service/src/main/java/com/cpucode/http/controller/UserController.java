@@ -302,6 +302,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 转换为前端显示
+     * @param userEntity
+     * @return
+     */
     private UserViewModel convertToVM(UserEntity userEntity){
         UserViewModel userViewModel = new UserViewModel();
 
