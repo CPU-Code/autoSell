@@ -1,14 +1,13 @@
 package com.cpucode.utils;
 
 import com.cpucode.http.view.TokenObject;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.Data;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -69,6 +68,46 @@ public class JWTUtil {
 
         //生成JWT
         return builder.compact();
+    }
+
+
+    /**
+     * 验证jwt
+     */
+    public static VerifyResult verifyJwt(String token, String secret) {
+        //签名秘钥，和生成的签名的秘钥一模一样
+        SecretKey key =  generalKey(secret);
+
+        try {
+//            ZoneId zoneId = ZoneId.systemDefault();
+//            ZonedDateTime zdt = LocalDateTime.now().atZone(zoneId);
+            Jwt jwt = Jwts.parser().setSigningKey(key).parse(token);
+
+            java.util.Date date = ((Claims) jwt.getBody()).getExpiration();
+            if (date == null) {
+                return new VerifyResult(false, 5002);
+            }
+
+            LocalDateTime expires = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+            if (expires.isBefore(LocalDateTime.now())) {
+                return new VerifyResult(false, 5001);
+            }
+
+            return new VerifyResult(true, 200);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return new VerifyResult(false, 5002);
+        }
+
+        //设置需要解析的jwt
+    }
+
+    public static TokenObject decode(String token) throws IOException {
+        String bodyData = token.split("\\.")[1];
+        String bodyStr = new String(Base64.getDecoder().decode(bodyData), StandardCharsets.UTF_8);
+
+        return JsonUtil.getByJson(bodyStr, TokenObject.class);
     }
 
     /**
