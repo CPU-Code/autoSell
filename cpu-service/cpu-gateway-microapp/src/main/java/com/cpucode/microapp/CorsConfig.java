@@ -1,0 +1,34 @@
+package com.cpucode.microapp;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.util.pattern.PathPatternParser;
+
+/**
+ * 网关跨域支持
+ *
+ * @author : cpucode
+ * @date : 2021/10/19 15:24
+ * @github : https://github.com/CPU-Code
+ * @csdn : https://blog.csdn.net/qq_44226094
+ */
+@Configuration
+public class CorsConfig {
+    private static final String MAX_AGE = "18000L";
+
+    @Bean
+    public CorsWebFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedMethod("*");
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsWebFilter(source);
+    }
+}
