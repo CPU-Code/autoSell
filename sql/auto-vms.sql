@@ -8,8 +8,11 @@ USE `auto-vms`;
 -- 无外键
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS `tb_area`;
+-- ----------------------------
+-- 区域表
+-- ----------------------------
 
+DROP TABLE IF EXISTS `tb_area`;
 CREATE TABLE `tb_area` (
   `id` int NOT NULL AUTO_INCREMENT,
   `parent_id` int NOT NULL DEFAULT '0' COMMENT '父Id',
@@ -18,23 +21,27 @@ CREATE TABLE `tb_area` (
   `city_code` varchar(10) DEFAULT NULL COMMENT '城市区号',
   `area_level` varchar(10) DEFAULT NULL COMMENT '地区级别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3726 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='区域表';
+) ENGINE=InnoDB AUTO_INCREMENT=3726 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='区域表';
 
+
+-- ----------------------------
+-- 商圈表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_business`;
-
 CREATE TABLE `tb_business` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL COMMENT '商圈名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商圈表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商圈表';
 
 
 
-
+-- ----------------------------
+-- 售货机货道表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_channel`;
-
 CREATE TABLE `tb_channel` (
   `channel_id` bigint NOT NULL AUTO_INCREMENT COMMENT '货道Id',
   `channel_code` varchar(10) NOT NULL COMMENT '货道编号',
@@ -50,9 +57,14 @@ CREATE TABLE `tb_channel` (
   PRIMARY KEY (`channel_id`),
   KEY `channel_vendingmachine_Id_fk` (`vm_id`),
   KEY `tb_channel_inner_code_index` (`inner_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4703 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='售货机货道表';
+) ENGINE=InnoDB AUTO_INCREMENT=4703 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售货机货道表';
 
 
+
+
+-- ----------------------------
+-- 点位表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_node`;
 
@@ -71,8 +83,13 @@ CREATE TABLE `tb_node` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `tb_node_name_uindex` (`name`),
   KEY `node_area_Id_fk` (`area_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='点位表';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='点位表';
 
+
+
+-- ----------------------------
+-- 策略表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_policy`;
 
@@ -84,8 +101,14 @@ CREATE TABLE `tb_policy` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`policy_id`),
   UNIQUE KEY `tb_policy_policy_name_uindex` (`policy_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='策略表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='策略表';
 
+
+
+
+-- ----------------------------
+-- 运营区域
+-- ----------------------------
 
 
 DROP TABLE IF EXISTS `tb_region`;
@@ -96,8 +119,14 @@ CREATE TABLE `tb_region` (
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tb_region_name_uindex` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='运营区域';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='运营区域';
 
+
+
+
+-- ----------------------------
+-- 商品表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_sku`;
 
@@ -115,8 +144,13 @@ CREATE TABLE `tb_sku` (
   PRIMARY KEY (`sku_id`),
   UNIQUE KEY `tb_sku_sku_name_uindex` (`sku_name`),
   KEY `sku_sku_class_ClassId_fk` (`class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品表';
 
+
+
+-- ----------------------------
+-- 商品类别表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_sku_class`;
 
@@ -126,9 +160,13 @@ CREATE TABLE `tb_sku_class` (
   `parent_id` int DEFAULT '0' COMMENT '上级id',
   PRIMARY KEY (`class_id`),
   UNIQUE KEY `tb_sku_class_class_name_uindex` (`class_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品类别表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品类别表';
 
 
+
+-- ----------------------------
+-- 售货机
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_vending_machine`;
 
@@ -157,10 +195,12 @@ CREATE TABLE `tb_vending_machine` (
   KEY `vendingmachine_city_CityId_fk` (`city_code`),
   KEY `vendingmachine_node_Id_fk` (`node_id`),
   KEY `vendingmachine_vmtype_TypeId_fk` (`vm_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售货机';
 
 
-
+-- ----------------------------
+-- 出货流水
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_vendout_running`;
 
@@ -175,9 +215,12 @@ CREATE TABLE `tb_vendout_running` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='出货流水';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='出货流水';
 
 
+-- ----------------------------
+-- 售货机配置版本
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_vm_cfg_version`;
 
@@ -193,9 +236,12 @@ CREATE TABLE `tb_vm_cfg_version` (
   PRIMARY KEY (`version_id`),
   UNIQUE KEY `vmcfgversion_InnerCode_uindex` (`inner_code`),
   KEY `vmcfgversion_vendingmachine_Id_fk` (`vm_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='售货机配置版本';
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售货机配置版本';
 
 
+-- ----------------------------
+-- 机器和策略关联表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_vm_policy`;
 
@@ -209,9 +255,12 @@ CREATE TABLE `tb_vm_policy` (
   `create_time` datetime DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='机器和策略关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='机器和策略关联表';
 
 
+-- ----------------------------
+-- 售货机类型表
+-- ----------------------------
 
 DROP TABLE IF EXISTS `tb_vm_type`;
 
@@ -226,11 +275,14 @@ CREATE TABLE `tb_vm_type` (
   PRIMARY KEY (`type_id`),
   UNIQUE KEY `tb_vm_type_name_uindex` (`name`),
   UNIQUE KEY `tb_vm_type_model_uindex` (`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='售货机类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售货机类型表';
 
 
 
--- 插入 tb_business
+
+-- ----------------------------
+-- 商圈表
+-- ----------------------------
 
 INSERT INTO `tb_business` VALUES ('1', '学校');
 INSERT INTO `tb_business` VALUES ('2', '工厂');
@@ -239,9 +291,9 @@ INSERT INTO `tb_business` VALUES ('4', '交通枢纽');
 
 
 
-
-
--- 插入 tb_area
+-- ----------------------------
+-- 区域表
+-- ----------------------------
 
 INSERT INTO `tb_area` VALUES ('1', '0', '河南省', '410000', '', 'province');
 INSERT INTO `tb_area` VALUES ('2', '1', '洛阳市', '410300', '0379', 'city');
