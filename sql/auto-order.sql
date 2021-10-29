@@ -19,7 +19,7 @@ CREATE TABLE `tb_order` (
   `order_no` varchar(50) NOT NULL COMMENT '订单编号',
   `third_no` varchar(34) DEFAULT NULL COMMENT '第三方平台单号',
   `inner_code` varchar(15) DEFAULT NULL COMMENT '机器编号',
-  `sku_id` bigint DEFAULT NULL COMMENT 'skuId' COMMENT '商品id',
+  `sku_id` bigint DEFAULT NULL COMMENT '商品id',
   `sku_name` varchar(20) DEFAULT NULL COMMENT '商品名称',
   `class_id` int DEFAULT NULL COMMENT '商品类别Id',
   `status` int DEFAULT NULL COMMENT '订单状态:0-创建;1-支付完成;2-出货成功;3-出货失败;4-失效',
