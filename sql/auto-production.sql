@@ -24,7 +24,7 @@ CREATE TABLE `tb_job` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_task`;
 CREATE TABLE `tb_task` (
-  `task_id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增工单编号',
+  `task_id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增工单id',
   `task_code` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '工单编号',
   `task_status` int DEFAULT NULL COMMENT '工单状态',
   `create_type` int DEFAULT NULL COMMENT '创建类型 0：自动 1：手动',
@@ -54,7 +54,7 @@ CREATE TABLE `tb_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_task_collect`;
 CREATE TABLE `tb_task_collect` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `finish_count` int DEFAULT '0' COMMENT '当日工单完成数',
   `progress_count` int DEFAULT '0' COMMENT '当日进行中的工单数',
   `cancel_count` int DEFAULT '0' COMMENT '当日取消工单数',
@@ -68,13 +68,13 @@ CREATE TABLE `tb_task_collect` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_task_details`;
 CREATE TABLE `tb_task_details` (
-  `details_id` bigint NOT NULL AUTO_INCREMENT,
+  `details_id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `task_id` bigint DEFAULT NULL COMMENT '工单Id',
   `channel_code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '货道编号',
   `expect_capacity` int NOT NULL DEFAULT '0' COMMENT '补货后期望容量',
   `sku_id` bigint DEFAULT NULL COMMENT '商品Id',
-  `sku_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sku_image` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sku_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品名',
+  `sku_image` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '商品图片url',
   PRIMARY KEY (`details_id`),
   KEY `taskdetails_task_TaskId_fk` (`task_id`),
   CONSTRAINT `taskdetails_task_TaskId_fk` FOREIGN KEY (`task_id`) REFERENCES `tb_task` (`task_id`)
@@ -86,8 +86,8 @@ CREATE TABLE `tb_task_details` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_task_status_type`;
 CREATE TABLE `tb_task_status_type` (
-  `status_id` int NOT NULL AUTO_INCREMENT,
-  `status_name` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `status_name` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '状态名',
   PRIMARY KEY (`status_id`),
   UNIQUE KEY `TaskStatusType_StatusID_uindex` (`status_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工单任务状态';
@@ -99,8 +99,8 @@ CREATE TABLE `tb_task_status_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_task_type`;
 CREATE TABLE `tb_task_type` (
-  `type_id` int NOT NULL,
-  `type_name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `type_id` int NOT NULL COMMENT '主键',
+  `type_name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '工单类型名',
   `type` int DEFAULT '1' COMMENT '工单类型。1:维修工单;2:运营工单',
   PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工单类型';
@@ -111,7 +111,7 @@ CREATE TABLE `tb_task_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_undo_reason`;
 CREATE TABLE `tb_undo_reason` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `describe` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '原因描述',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工单无法完成原因';

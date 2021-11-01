@@ -14,7 +14,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS `tb_area`;
 CREATE TABLE `tb_area` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `parent_id` int NOT NULL DEFAULT '0' COMMENT '父Id',
   `area_name` varchar(20) NOT NULL DEFAULT '' COMMENT '区域名称',
   `ad_code` varchar(10) NOT NULL DEFAULT '0' COMMENT '地区编码',
@@ -30,7 +30,7 @@ CREATE TABLE `tb_area` (
 
 DROP TABLE IF EXISTS `tb_business`;
 CREATE TABLE `tb_business` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `name` varchar(50) DEFAULT NULL COMMENT '商圈名称',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商圈表';
@@ -69,7 +69,7 @@ CREATE TABLE `tb_channel` (
 DROP TABLE IF EXISTS `tb_node`;
 
 CREATE TABLE `tb_node` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '点位名称',
   `addr` varchar(200) NOT NULL DEFAULT '' COMMENT '点位详细地址',
   `area_code` varchar(10) NOT NULL DEFAULT '0' COMMENT '所在区域Id',
@@ -94,7 +94,7 @@ CREATE TABLE `tb_node` (
 DROP TABLE IF EXISTS `tb_policy`;
 
 CREATE TABLE `tb_policy` (
-  `policy_id` int NOT NULL AUTO_INCREMENT COMMENT '策略id',
+  `policy_id` int NOT NULL AUTO_INCREMENT COMMENT '自增策略id',
   `policy_name` varchar(30) DEFAULT NULL COMMENT '策略名称',
   `discount` int DEFAULT NULL COMMENT '折扣，如：80代表8折',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -114,7 +114,7 @@ CREATE TABLE `tb_policy` (
 DROP TABLE IF EXISTS `tb_region`;
 
 CREATE TABLE `tb_region` (
-  `id` bigint NOT NULL,
+  `id` bigint NOT NULL COMMENT '主键',
   `name` varchar(50) DEFAULT NULL COMMENT '区域名称',
   `remark` varchar(100) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
@@ -131,14 +131,14 @@ CREATE TABLE `tb_region` (
 DROP TABLE IF EXISTS `tb_sku`;
 
 CREATE TABLE `tb_sku` (
-  `sku_id` bigint NOT NULL,
+  `sku_id` bigint NOT NULL COMMENT '主键',
   `sku_name` varchar(50) NOT NULL COMMENT '商品名称',
   `sku_image` varchar(500) NOT NULL COMMENT '商品图片',
   `price` int NOT NULL DEFAULT '1' COMMENT '基础价格',
   `class_id` int NOT NULL COMMENT '商品类别Id',
   `is_discount` tinyint(1) DEFAULT '0' COMMENT '是否打折促销',
   `unit` varchar(20) DEFAULT NULL COMMENT '净含量',
-  `brand_Name` varchar(50) NOT NULL,
+  `brand_name` varchar(50) NOT NULL COMMENT '品牌名',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`sku_id`),
@@ -155,7 +155,7 @@ CREATE TABLE `tb_sku` (
 DROP TABLE IF EXISTS `tb_sku_class`;
 
 CREATE TABLE `tb_sku_class` (
-  `class_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `class_id` int NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `class_name` varchar(50) DEFAULT '' COMMENT '类别名称',
   `parent_id` int DEFAULT '0' COMMENT '上级id',
   PRIMARY KEY (`class_id`),
@@ -171,7 +171,7 @@ CREATE TABLE `tb_sku_class` (
 DROP TABLE IF EXISTS `tb_vending_machine`;
 
 CREATE TABLE `tb_vending_machine` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `vm_type` int NOT NULL DEFAULT '0' COMMENT '售货机类型',
   `inner_code` varchar(15) DEFAULT '000' COMMENT '售货机软编号',
   `node_id` bigint NOT NULL COMMENT '点位Id',
@@ -205,7 +205,7 @@ CREATE TABLE `tb_vending_machine` (
 DROP TABLE IF EXISTS `tb_vendout_running`;
 
 CREATE TABLE `tb_vendout_running` (
-  `id` bigint NOT NULL COMMENT 'id',
+  `id` bigint NOT NULL COMMENT 'id' COMMENT '主键',
   `order_no` varchar(38) NOT NULL DEFAULT '' COMMENT '订单编号',
   `inner_code` varchar(15) NOT NULL COMMENT '售货机编号',
   `status` tinyint(1) DEFAULT NULL COMMENT '状态',
@@ -225,7 +225,7 @@ CREATE TABLE `tb_vendout_running` (
 DROP TABLE IF EXISTS `tb_vm_cfg_version`;
 
 CREATE TABLE `tb_vm_cfg_version` (
-  `version_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `version_id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `vm_id` bigint DEFAULT NULL COMMENT '售货机Id',
   `inner_code` varchar(15) NOT NULL COMMENT '售货机编号',
   `channel_cfg_version` bigint NOT NULL DEFAULT '1' COMMENT '货道配置版本',
@@ -265,13 +265,13 @@ CREATE TABLE `tb_vm_policy` (
 DROP TABLE IF EXISTS `tb_vm_type`;
 
 CREATE TABLE `tb_vm_type` (
-  `type_id` int NOT NULL AUTO_INCREMENT,
+  `type_id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `vm_row` int NOT NULL DEFAULT '1' COMMENT '行数',
   `vm_col` int NOT NULL DEFAULT '1' COMMENT '列数',
   `name` varchar(15) NOT NULL COMMENT '类型名',
   `channel_max_capacity` int DEFAULT '0' COMMENT '货道最大容量',
   `model` varchar(20) DEFAULT NULL COMMENT '型号',
-  `image` varchar(500) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL COMMENT '图片url',
   PRIMARY KEY (`type_id`),
   UNIQUE KEY `tb_vm_type_name_uindex` (`name`),
   UNIQUE KEY `tb_vm_type_model_uindex` (`model`)

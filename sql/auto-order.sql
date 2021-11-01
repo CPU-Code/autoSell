@@ -50,15 +50,15 @@ CREATE TABLE `tb_order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_order_collect`;
 CREATE TABLE `tb_order_collect` (
-  `id` bigint NOT NULL COMMENT 'Id',
+  `id` bigint NOT NULL COMMENT '主键',
   `owner_id` int DEFAULT NULL COMMENT '合作商Id',
   `owner_name` varchar(100) DEFAULT NULL COMMENT '合作商名称',
   `order_total_money` bigint DEFAULT NULL COMMENT '日订单收入总金额(平台端总数)',
   `date` date DEFAULT NULL COMMENT '发生日期',
   `total_bill` int DEFAULT '0' COMMENT '分成总金额',
   `node_amount` int DEFAULT NULL COMMENT '当日点位营收',
-  `node_id` bigint DEFAULT NULL,
-  `node_name` varchar(50) DEFAULT NULL COMMENT '点位',
+  `node_id` bigint DEFAULT NULL COMMENT '点位id',
+  `node_name` varchar(50) DEFAULT NULL COMMENT '点位名',
   `order_count` int DEFAULT NULL COMMENT '订单数',
   `ratio` int DEFAULT NULL COMMENT '分成比例',
   PRIMARY KEY (`id`),

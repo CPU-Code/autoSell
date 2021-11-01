@@ -15,7 +15,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_partner`;
 CREATE TABLE `tb_partner` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `name` varchar(50) DEFAULT NULL COMMENT '合作商名',
   `password` varchar(200) DEFAULT NULL COMMENT '密码',
   `account` varchar(32) DEFAULT NULL COMMENT '账号',
@@ -42,7 +42,7 @@ CREATE TABLE `tb_partner` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_role`;
 CREATE TABLE `tb_role` (
-  `role_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `role_id` int NOT NULL AUTO_INCREMENT COMMENT '自增角色主键',
   `role_code` varchar(10) DEFAULT NULL COMMENT '角色编号',
   `role_name` varchar(10) DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`role_id`)
@@ -55,7 +55,7 @@ CREATE TABLE `tb_role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `role_id` int DEFAULT NULL COMMENT '角色Id',
   `user_name` varchar(50) NOT NULL COMMENT '用户名称',
   `login_name` varchar(50) DEFAULT NULL COMMENT '登录名',
@@ -66,7 +66,7 @@ CREATE TABLE `tb_user` (
   `region_id` bigint DEFAULT NULL COMMENT '所属区域Id',
   `region_name` varchar(50) DEFAULT NULL COMMENT '区域名称',
   `status` tinyint DEFAULT '1' COMMENT '是否启用',
-  `image` varchar(500) DEFAULT NULL,
+  `image` varchar(500) DEFAULT NULL COMMENT '照片url',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tb_user_Id_uindex` (`id`),
   UNIQUE KEY `tb_user_mobile_uindex` (`mobile`)
