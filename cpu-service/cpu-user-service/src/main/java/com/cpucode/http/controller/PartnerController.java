@@ -109,7 +109,6 @@ public class PartnerController {
         return partnerService.search(pageIndex, pageSize, name);
     }
 
-
     /**
      * 重置密码
      * @param id

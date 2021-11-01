@@ -143,7 +143,10 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
      */
     @Override
     public void resetPwd(Integer id) {
+        // 重置 默认密码 123456
         String pwd = BCrypt.hashpw("123456", BCrypt.gensalt());
+
+        // 根据 id 设置密码
         LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<PartnerEntity>();
         uw.set(PartnerEntity::getPassword, pwd)
                 .eq(PartnerEntity::getId, id);
@@ -162,13 +165,16 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
     public Pager<PartnerEntity> search(Long pageIndex, Long pageSize, String name) {
         Page<PartnerEntity> page = new Page<>(pageIndex, pageSize);
 
+        //查询条件
         LambdaQueryWrapper<PartnerEntity> qw = new LambdaQueryWrapper<>();
         if(!Strings.isNullOrEmpty(name)){
             qw.like(PartnerEntity::getName, name);
         }
 
+        //分页查询
         this.page(page, qw);
 
+        // forEach 设置密码 和 机器数量
         page.getRecords().forEach(p -> {
             p.setPassword("");
             p.setVmCount(vmService.getVmCountByOwnerId(p.getId()));
@@ -184,15 +190,18 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
      */
     @Override
     public Boolean updatePwd(Integer id, PartnerUpdatePwdReq req){
+        // 根据 id 获取合作商信息
         PartnerEntity partner = this.getById(id);
         if (partner == null){
             throw new LogicException("合作商不存在");
         }
 
+        // 验证原密码是否正确
         if (!BCrypt.checkpw(req.getPassword(), partner.getPassword())){
             throw new LogicException("原始密码错误");
         }
 
+        // 根据 id 设置 密码
         LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<>();
         uw.set(PartnerEntity::getPassword, BCrypt.hashpw(req.getNewPassword(), BCrypt.gensalt()))
                 .eq(PartnerEntity::getId, id);
