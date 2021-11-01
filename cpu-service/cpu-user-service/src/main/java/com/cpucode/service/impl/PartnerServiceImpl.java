@@ -102,7 +102,7 @@ public class PartnerServiceImpl extends ServiceImpl<PartnerDao, PartnerEntity> i
      */
     @Override
     public Boolean modify(Integer id, PartnerReq req){
-        /***********************************************/
+        /******************* 未使用 ****************************/
         LambdaUpdateWrapper<PartnerEntity> uw = new LambdaUpdateWrapper<PartnerEntity>();
         uw.set(PartnerEntity::getName, req.getName())
                 .set(PartnerEntity::getRatio, req.getRatio())

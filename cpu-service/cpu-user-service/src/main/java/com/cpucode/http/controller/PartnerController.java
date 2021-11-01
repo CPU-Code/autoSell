@@ -35,6 +35,7 @@ public class PartnerController {
         PartnerEntity partnerEntity = new PartnerEntity();
         BeanUtils.copyProperties(partnerReq, partnerEntity);
 
+        //合作商 默认密码 : 123456
         partnerEntity.setPassword(BCrypt.hashpw("123456", BCrypt.gensalt()));
 
         return partnerService.save(partnerEntity);

@@ -15,6 +15,10 @@ import java.util.Properties;
  */
 @Component
 public class KaptcharConfig {
+    /**
+     * 生成验证码图片
+     * @return
+     */
     @Bean
     public DefaultKaptcha getDefaultKaptcha() {
         com.google.code.kaptcha.impl.DefaultKaptcha defaultKaptcha = new com.google.code.kaptcha.impl.DefaultKaptcha();
