@@ -42,12 +42,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
+    /**
+     * RequiredArgsConstructor 注入
+     */
     private final UserService userService;
     private final RoleService roleService;
     private final VMService vmService;
     private final DefaultKaptcha kaptcha;
     private final TaskService taskService;
 
+    /**
+     * Autowired 注入
+     */
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
@@ -58,6 +64,8 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public UserViewModel findById(@PathVariable Integer id){
+        // TODO 角色没有查询
+
         UserEntity userEntity = userService.getById(id);
         if(userEntity == null) {
             return null;
@@ -80,6 +88,7 @@ public class UserController {
         user.setRegionName(req.getRegionName());
         user.setMobile(req.getMobile());
         user.setRoleId(req.getRoleId());
+        // 通过角色id 获取角色码
         user.setRoleCode(roleService.getById(req.getRoleId()).getRoleCode());
         user.setStatus(req.getStatus());
         user.setImage(req.getImage());
@@ -174,8 +183,8 @@ public class UserController {
 
         byte[] captchaChallengeAsJpeg  = jpegOutputStream.toByteArray();
         httpServletResponse.setContentType("image/jpeg");
-        ServletOutputStream responseOutputStream =
-                httpServletResponse.getOutputStream();
+
+        ServletOutputStream responseOutputStream = httpServletResponse.getOutputStream();
         responseOutputStream.write(captchaChallengeAsJpeg);
         responseOutputStream.flush();
         responseOutputStream.close();
@@ -310,17 +319,16 @@ public class UserController {
     private UserViewModel convertToVM(UserEntity userEntity){
         UserViewModel userViewModel = new UserViewModel();
 
-        userViewModel.setMobile(userEntity.getMobile());
+        userViewModel.setUserId(userEntity.getId());
+        userViewModel.setUserName(userEntity.getUserName());
         userViewModel.setLoginName(userEntity.getLoginName());
         userViewModel.setRoleId(userEntity.getRoleId());
+        userViewModel.setRoleName(userEntity.getRole().getRoleName());
         userViewModel.setRoleCode(userEntity.getRoleCode());
-        userViewModel.setUserId(userEntity.getId());
-        userViewModel.setRoleName(userEntity.getRole().getRoleName());
-        userViewModel.setUserName(userEntity.getUserName());
-        userViewModel.setStatus(userEntity.getStatus());
+        userViewModel.setMobile(userEntity.getMobile());
         userViewModel.setRegionId(userEntity.getRegionId());
-        userViewModel.setRoleName(userEntity.getRole().getRoleName());
         userViewModel.setRegionName(userEntity.getRegionName());
+        userViewModel.setStatus(userEntity.getStatus());
         userViewModel.setImage(userEntity.getImage());
 
         return userViewModel;

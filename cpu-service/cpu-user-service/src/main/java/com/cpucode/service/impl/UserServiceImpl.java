@@ -87,19 +87,23 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
                                       String userName, Integer roleId){
         com.baomidou.mybatisplus.extension.plugins.pagination.Page<UserEntity> page =
                 new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageIndex, pageSize);
+
+        // 用户名模糊查询
         LambdaQueryWrapper<UserEntity> wrapper = new LambdaQueryWrapper<>();
         if (Strings.isNullOrEmpty(userName)){
             wrapper.like(UserEntity::getUserName, userName);
         }
 
         if (roleId != null && roleId > 0){
-            wrapper.eq(UserEntity::getRoleId, 1);
+            wrapper.eq(UserEntity::getRoleId, roleId);
         }
 
-        // TODO 不懂
+        // TODO 不懂 ,,,,,, 不等于 1
         wrapper.ne(UserEntity::getRoleId, 1);
 
         this.page(page, wrapper);
+
+        // 设置敏感内容为空
         page.getRecords().forEach(u -> {
             u.setPassword("");
             u.setSecret("");
@@ -124,6 +128,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
             return partnerService.login(req);
         }
 
+        // 错误返回
         LoginResp resp = new LoginResp();
         resp.setSuccess(false);
         resp.setMsg("不存在该账户");
@@ -185,7 +190,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
                     BeanUtils.copyProperties(u, vo);
 
+                    // TODO 查询不到??
                     vo.setRoleName(u.getRole().getRoleName());
+
                     vo.setRoleCode(u.getRoleCode());
                     vo.setUserId(u.getId());
 
@@ -210,7 +217,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
 
                     BeanUtils.copyProperties(u, vo);
 
+                    // TODO 查询不到??
                     vo.setRoleName(u.getRole().getRoleName());
+
                     vo.setRoleCode(u.getRoleCode());
                     vo.setUserId(u.getId());
 
@@ -226,8 +235,9 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
      */
     @Override
     public Integer getCountByRegion(Long regionId, Boolean isRepair){
+        // 根据区域id
         LambdaQueryWrapper<UserEntity> qw = new LambdaQueryWrapper<UserEntity>();
-        qw.eq(UserEntity::getRegionId,regionId);
+        qw.eq(UserEntity::getRegionId, regionId);
 
         if(isRepair){
             qw.eq(UserEntity::getRoleId, 3);
@@ -252,11 +262,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         // 通过 redis 获取验证码
         String code = redisTemplate.boundValueOps(req.getClientToken()).get();
 
-        if (Strings.isNullOrEmpty(code)){
-            resp.setMsg("验证码错误");
-            return resp;
-        }
-        if(!req.getCode().equals(code)){
+        if (Strings.isNullOrEmpty(code) || !req.getCode().equals(code)){
             resp.setMsg("验证码错误");
             return resp;
         }
@@ -332,6 +338,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         resp.setRegionId(userEntity.getRegionId()+"");
         resp.setMsg("登录成功");
 
+        // JWT构造
         TokenObject tokenObject = new TokenObject();
         tokenObject.setUserId(userEntity.getId());
         tokenObject.setMobile(userEntity.getMobile());

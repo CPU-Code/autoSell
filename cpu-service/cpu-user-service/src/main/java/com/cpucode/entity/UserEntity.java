@@ -85,6 +85,9 @@ public class UserEntity implements Serializable {
      */
     private Boolean status;
 
+    /**
+     * 角色
+     */
     @TableField(exist = false)
     private RoleEntity role;
 
