@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @TableName(value = "tb_channel", autoResultMap = true, resultMap = "channelMap")
 public class ChannelEntity extends AbstractEntity implements Serializable {
     /**
-     * 表Id
+     * 货道Id
      */
     @TableId(value = "channel_id", type = IdType.AUTO)
     private Long channelId;
@@ -38,7 +38,6 @@ public class ChannelEntity extends AbstractEntity implements Serializable {
      */
     @TableField(value = "sku_id")
     private Long skuId;
-
 
     /**
      * 货道商品最终售价

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 区域
+ *
  * @author : cpucode
  * @date : 2021/10/20 10:51
  * @github : https://github.com/CPU-Code
@@ -70,7 +72,6 @@ public class AreaController {
         area.setAreaName(entity.getAreaName());
         area.setAdCode(entity.getAdCode());
         area.setAreaLevel(entity.getAreaLevel());
-
 
         return area;
     }
