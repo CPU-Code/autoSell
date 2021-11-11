@@ -246,14 +246,14 @@ CREATE TABLE `tb_vm_cfg_version` (
 DROP TABLE IF EXISTS `tb_vm_policy`;
 
 CREATE TABLE `tb_vm_policy` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `vm_id` bigint NOT NULL COMMENT '售货机id',
   `inner_code` varchar(15) NOT NULL COMMENT '售货机编号',
   `policy_id` int NOT NULL COMMENT '策略id',
   `policy_name` varchar(30) DEFAULT NULL COMMENT '策略名称',
   `discount` int NOT NULL DEFAULT '100' COMMENT '折扣',
-  `create_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='机器和策略关联表';
 
