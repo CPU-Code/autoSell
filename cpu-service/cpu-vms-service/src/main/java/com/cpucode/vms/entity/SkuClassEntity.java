@@ -9,6 +9,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * 商品类别
  * @author : cpucode
  * @date : 2021/10/20 11:22
  * @github : https://github.com/CPU-Code
